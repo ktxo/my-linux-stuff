@@ -1,0 +1,34 @@
+#
+# From https://github.com/ktxo/my-linux-stuff
+#
+
+
+### Various
+alias condaw="condaw.sh"
+alias N='nohup nautilus -w . > /dev/null 2>&1 &'
+alias LA='alias | grep "^alias [A-Z]" | sed -e "s/^alias //" | sort | awk -F= "{printf \"%-10s %s\n\", \$1, \$2}"'
+alias DF='df -h |egrep -v "snap|tmpfs|boot|udev"'
+alias T='touch .'
+alias vlog='tail -f /var/log/syslog'
+
+
+#### ML
+alias J='jupyter notebook'
+
+
+### Conda
+alias CA='conda activate $@'
+alias CD='conda deactivate'
+alias CL='ls -1d /sw/anaconda/envs/* | awk -F"/" "{printf(\"%-20s %s\\n\", \$5, \$0)}" | sort'
+
+
+### Projects
+alias P='cd /projects/IT'
+alias RMC='cd  /projects/RMC/src'
+alias P1='conda activate powerledger; cd /projects/INVERTERS'
+alias AIR='cd /projects/IT/ML/OPENAI/rpa; conda activate oai'
+
+
+### Docker
+alias DLI='docker image ls $@'
+alias DLC='docker ps $@'
