@@ -5,9 +5,12 @@ Just some Linux commands, scripts, references that I use
 
 ----
 1. [Linux alias](#alias)
+2. [My tools and scripts](#my-tools-and-scripts)
+    - [ngrok](#ngrok)
 
 
-### Alias
+
+## Alias
 
 I have several Linux alias, some of them are "temporal" (defined for an ongoing project) and others are "permanent". 
 
@@ -54,6 +57,33 @@ LA         'alias | grep "^alias [A-Z]" | sed -e "s/^alias //" | sort | awk -F
 N          'nohup nautilus -w . > /dev/null 2>&1 &'
 T          'touch .'
 ...
+```
+
+
+## My Tools and scripts
+
+I did some scripts and tools (I still doing, there is always an opportunity for a new script or tool in Linux)
+
+My scripts and tools are in folder **/sw** (again my convention ¯\_(ツ)_/¯), I found this convention useful: when I cange my  computer  I just copy this folder and run a script to *"install all"*: generally, installation is  is just  define some environment variables and create some symbolic links
+
+- ### ngrok
+
+Sometimes I use [ngrok](https://ngrok.com/) to expose quickly a local port to internet (e.g.: testing a Flask or FasAPI development)
+ 
+Script [run_ngrok.sh](run_ngrok.sh) is a wrapper to ngrok command
+```
+$> run_ngrok.sh -h
+NAME
+ Wrapper for ngrok command (https://ngrok.com/)
+
+ ngrok command=/sw/ngrok
+
+USAGE
+ run_ngrok.sh [-P port_number] [-u user -p pass]  [-c http|tcp]
+
+EXAMPLES
+ run_ngrok.sh -P 8989                      # expose HTTP 8989
+ run_ngrok.sh -P 8989 -u admin -p passw0rd # expose HTTP 8989 with basic auth admin:passw0rd
 ```
 
 
