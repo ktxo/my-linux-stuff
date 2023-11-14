@@ -38,6 +38,8 @@
 
 - Script [do_copyq.py](my_copyq/do_copyq.sh) is used to load these files to copyq
 
+![](images/copyq/usage_command.gif)
+
 - I recommend  define a shortcut for **Show/hide main window**  (Preference > Shortcut), e.g: **CTRL+Alt+C**
 ![](images/copyq/shortcut.png)
 
