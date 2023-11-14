@@ -8,7 +8,7 @@ Just some Linux commands, scripts, references that I use
 2. [My tools and scripts](#my-tools-and-scripts)
     - [ngrok](#ngrok)
 
-
+3. [CopyQ](README-copyq.md): Clipboard manager (https://hluk.github.io/CopyQ/)
 
 ## Alias
 
@@ -85,5 +85,4 @@ EXAMPLES
  run_ngrok.sh -P 8989                      # expose HTTP 8989
  run_ngrok.sh -P 8989 -u admin -p passw0rd # expose HTTP 8989 with basic auth admin:passw0rd
 ```
-
 

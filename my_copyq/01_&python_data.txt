@@ -1,0 +1,174 @@
+--------------- IMPORTS
+import jmespath as J
+
+print(J.search(mic_data, "b.a"))
+
+--------------- LOGGING
+import logging
+import logging.config
+
+_log = logging.getLogger("ktxo.app")
+
+LOG_LEVELS = {'I': logging.INFO, 'D': logging.DEBUG, 'W': logging.WARNING, 'E': logging.ERROR}
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S')
+
+--------------- REQUIREMENTS
+
+#
+# Conda configuration
+# conda create  --yes --name XX python=3.10
+# conda install --yes --name XX --file requirements.txt
+#
+# VirtualEnv
+# python -m venv venv
+# source venv/bin/activate
+# pip install --upgrade pip
+#
+
+--------------- VIRTUAL_ENV
+python -m pip install --upgrade pip
+VENV=myenv
+python -m  venv ${VENV}
+source ${VENV}/bin/activate
+deactivate
+
+--------------- DATACLASS
+from dataclasses import dataclasses
+
+
+@dataclass
+class Elapsed:
+    i: int = 0
+
+
+--------------- READ_JSON_SIMPLE
+import json
+
+config = {}
+with open("config.json", 'r') as fd: config = json.load(fd)
+
+--------------- READ_JSON
+import json
+import sys
+
+
+def load_json(filename, ignore_error=False):
+    try:
+        with open(filename) as fd:
+            return json.load(fd)
+    except Exception as e:
+        if ignore_error:
+            return {}
+        else:
+            raise e
+    # assert True, f"Cannot open/read {filename}. Abort"
+    # traceback.print_tb()
+    # sys.exit(1)
+
+
+--------------- JSON_2_CSV
+import json
+
+
+def json_2_csv(data: list[dict], header=True, filename=None):
+    assert isinstance(data, list), "param data must be list of dict"
+    if len(data) == 0:
+        return
+    headers = data[0].keys()
+    if filename:
+        fd = open(filename, "w", encoding="utf-8")
+    else:
+        fd = sys.stdout
+
+    writer = csv.DictWriter(fd, fieldnames=headers)
+    if header:
+        writer.writeheader()
+    writer.writerows(data)
+    if filename:
+        fd.close()
+
+
+--------------- Supress_Warnings
+import warnings
+
+# All
+warnings.filterwarnings("ignore")
+# FutureWarning: Passing....
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
+--------------- TKINTER
+import tkinter as tk
+
+class MainApplication(tk.Frame):
+    def __init__(self, parent, *args, **kwargs):
+        tk.Frame.__init__(self, parent, *args, **kwargs)
+        self.parent = parent
+
+        # Rest of gui here
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    MainApplication(root).pack(side="top", fill="both", expand=True)
+    root.mainloop()
+
+--------------- HTTP_REQUEST
+import requests
+
+HEADERS = {'Content-Type': 'application/json', 'Accept': '*/*'}
+
+def get_data(url, headers=HEADERS, data=None):
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+    
+        if 'application/json' in response.headers.get('content-type'):
+            data = response.json()
+        elif any(ct in response.headers.get('content-type') for ct in
+                 ["text/plain", "text/xml", "text/html", "text/csv"]):
+            data = response.text
+        else:
+            data = response
+        return [response.status_code, data]
+    except requests.exceptions.HTTPError as http_err:
+        return [response.status_code, str(http_err)]
+        # print(f'HTTP error occurred: {http_err}')  # Python 3.6
+    except Exception as err:
+        # print(f'Other error occurred: {err}')  # Python 3.6
+        return [-1, str(err)]
+
+
+url = "https://randomuser.me/api/?results=1"
+
+print(get_data(url))
+
+--------------- LIST_FILES_SIMPLE
+import os
+
+def list_files(from_folder=".", file_type=["jpeg", "jpg"]):
+    if isinstance(file_type, str):
+        file_type = [file_type]
+    files = []
+    for file in os.listdir(from_folder):
+        if (os.path.splitext(file)[1]).lower().replace(".", "") in file_type:
+            files.append(os.path.join(from_folder, file))
+    return files
+
+
+--------------- LIST_FILES_GROUPED
+def list_files(from_folder, extensions=["*"]) -> dict:
+    file_list = {}
+    if extensions is None or "*" in extensions:
+        extensions = None
+
+    for root, dirs, files in os.walk(from_folder):
+        for name in files:
+            f, e = os.path.splitext(name)
+            e = e.replace(".", "").lower()
+            if extensions is None or e in extensions:
+                if e in file_list:
+                    file_list[e].append(os.path.join(root, name))
+                else:
+                    file_list[e] = [os.path.join(root, name)]
+    return file_list

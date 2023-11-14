@@ -1,0 +1,67 @@
+--------------- IMPORT_OPENCV
+import cv2
+import imutils as im
+import sys
+import os
+
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+
+# Optional
+sys.path.append('/projects/ml')
+import image_helper as ih
+import opencv_helper as oh
+
+--------------- SHOW_IMAGE_WINDOW
+
+
+def im_show(img, w=400):
+    imgResized = im.resize(img, w)
+    while True:
+        cv2.imshow("output", imgResized)
+        if cv2.waitKey(1) & 0xff == ord('q'):
+            break
+    cv2.destroyAllWindows()
+
+
+--------------- BASIC_PROCESSING
+imgFilename = 'aa.jpg'
+img = cv2.imread(imgFilename)
+imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+imgBlurM = cv2.medianBlur(imgGray, 5)
+imgBlurG = cv2.GaussianBlur(imgGray, (7, 7), 1)
+imgBlurB = cv2.bilateralFilter(imgGray, 9, 75, 75)
+
+# cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU
+imgTh1 = cv2.threshold(imgGray, 50, 255, cv2.THRESH_BINARY)[1]
+imgTh2 = cv2.adaptiveThreshold(imgGray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+
+# auto canny
+sigma = 0.33
+v = np.median(img)
+thL = int(max(0, (1.0 - sigma) * v))
+thH = int(min(255, (1.0 + sigma) * v))
+
+imgCanny = cv2.Canny(imgFull, thL, thH)
+
+kernel = np.ones((5, 5))
+imgDil = cv2.dilate(imgCanny, kernel, iterations=1)
+
+imgEro = cv2.erode(imgGray, kernel, iterations=10)
+
+--------------- ADD_TRACKBAR
+def empty(a):
+    pass
+
+
+cv2.namedWindow("Parameters")
+cv2.resizeWindow("Parameters", 480, 240)
+# Add for each parameter
+cv2.createTrackbar("Param1", "Parameters", 34, 255, empty)
+cv2.createTrackbar("Param2", "Parameters", 100, 255, empty)
+
+value1 = cv2.getTrackbarPos("Param1", "Parameters")
+value2 = cv2.getTrackbarPos("Param1", "Parameters")

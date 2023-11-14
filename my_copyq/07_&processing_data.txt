@@ -1,0 +1,49 @@
+
+
+--------------- SKETCH
+// ------------------------------------------------------------------------
+int W=400;
+int H=400;
+int BACKGROUND=220;
+
+boolean saveSketch=false;
+boolean flag=false;
+
+// ------------------------------------------------------------------------
+void settings() {
+  size(W, H);
+  randomSeed(0);
+  noiseSeed(0);
+}
+void setup() {
+  background(BACKGROUND);
+}
+
+// ------------------------------------------------------------------------
+void draw() {
+  background(BACKGROUND);
+  
+   
+  if (saveSketch ) {
+    String sketchName= getClass().getName() + ".png";
+    print(String.format("Saving sketch to %s, ", sketchName));
+    saveFrame(sketchName);
+    saveSketch=false;
+    println("done");
+  }
+}
+
+
+
+// ------------------------------------------------------------------------
+void keyPressed() {
+  if ( key == 's') {
+    saveSketch=true;
+  }
+}
+// ------------------------------------------------------------------------
+void mousePressed() {
+  if ( mouseButton == LEFT ) {
+    flag=!flag;
+  }
+}

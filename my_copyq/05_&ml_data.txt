@@ -1,0 +1,30 @@
+--------------- IMPORT_FULL
+import sys
+import os
+
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+import tensorflow as tf
+
+# from pandas_summary import DataFrameSummary
+
+# Optional
+sys.path.append('/projects/ml')
+
+import pandas_helper as ph
+
+tf.__version__, np.__version__, pd.__version__
+
+--------------- SEED_REPRODUCIBLE
+SEED = 99
+np.random.seed(SEED)
+random.seed(SEED)
+
+# tf.random.set_seed(SEED)
+# tf.experimental.numpy.random.seed(SEED)
+# tf.set_random_seed(SEED)
+
+# torch.manual_seed(SEED)
+# torch.cuda.manual_seed(SEED)
